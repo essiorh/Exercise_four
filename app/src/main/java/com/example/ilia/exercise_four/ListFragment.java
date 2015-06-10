@@ -1,6 +1,7 @@
 package com.example.ilia.exercise_four;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * Created by ilia on 08.06.15.
  */
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener{
+public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ISetCurrentItem{
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
@@ -44,7 +45,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
             children1.add("Child_2");
             groups.add(children1);
         }
-        ExpListAdapter adapter = new ExpListAdapter(inflateView.getContext(), groups);
+        ExpListAdapter adapter = new ExpListAdapter(inflateView.getContext(), groups,getActivity());
         expandableListView.setAdapter(adapter);
         String[] arrayListForDefaultList = getResources().getStringArray(R.array.android_version);
         ArrayList<String> stringListForDefaultList = new ArrayList<>();
@@ -54,13 +55,6 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         ListAdapter mListAdapter = new DefListAdapter(inflateView.getContext(), stringListForDefaultList);
         defaultListView.setAdapter(mListAdapter);
         return inflateView;
-    }
-
-    @Override
-    public void onDestroy() {
-        expandableListView.setAdapter(new ExpListAdapter(getActivity().getApplicationContext(), new ArrayList<ArrayList<String>>()) {
-        });
-        super.onDestroy();
     }
 
 
@@ -79,5 +73,11 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void setCurrentItem(int currentItem) {
+        defaultListView.setSelection(currentItem);
+        defaultListView.setSelection(currentItem);
     }
 }

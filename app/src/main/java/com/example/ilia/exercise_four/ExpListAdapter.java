@@ -1,6 +1,8 @@
 package com.example.ilia.exercise_four;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,11 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 
     private ArrayList<ArrayList<String>> mGroups;
     private Context mContext;
-
-    public ExpListAdapter(Context context, ArrayList<ArrayList<String>> groups){
+    private Activity mActivity;
+    public ExpListAdapter(Context context, ArrayList<ArrayList<String>> groups,Activity activity) {
         mContext = context;
         mGroups = groups;
+        mActivity = activity;
     }
 
     @Override
@@ -93,10 +96,13 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         textChild.setText(mGroups.get(groupPosition).get(childPosition));
 
         Button button = (Button)convertView.findViewById(R.id.buttonChild);
+        final int pos=groupPosition;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "button is pressed", 5000).show();
+                IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) mActivity;
+                listener.onItemSelected(pos);
+                Toast.makeText(mContext, "button is pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
