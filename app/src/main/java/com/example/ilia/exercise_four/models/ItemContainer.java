@@ -3,13 +3,13 @@ package com.example.ilia.exercise_four.models;
 /**
  * Created by ilia on 11.06.15.
  */
-public class ItemList {
+public class ItemContainer {
     private String mTitle;
     private int mIdRed;
     private boolean mFavorite;
     private String mUrl;
 
-    public ItemList(String title,int idRed, boolean favorite, String url) {
+    public ItemContainer(String title, int idRed, boolean favorite, String url) {
         mTitle=title;
         mIdRed=idRed;
         mFavorite=favorite;

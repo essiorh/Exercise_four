@@ -1,6 +1,5 @@
 package com.example.ilia.exercise_four.fragments;
 
-import android.app.ExpandableListActivity;
 import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -21,19 +20,19 @@ import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.adapters.DefListAdapter;
 import com.example.ilia.exercise_four.adapters.ExpListAdapter;
-import com.example.ilia.exercise_four.models.ItemList;
+import com.example.ilia.exercise_four.models.ItemContainer;
 
 import java.util.ArrayList;
 
 /**
  * Created by ilia on 08.06.15.
  */
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, ISetCurrentItem {
+public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, ISetCurrentItem {
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
     private         ExpListAdapter adapter;
-    private         ArrayList<ArrayList<ItemList>> groups;
+    private         ArrayList<ArrayList<ItemContainer>> groups;
 
     public ListFragment() {
     }
@@ -51,17 +50,17 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         TypedArray stringListForExpanedList = getResources().obtainTypedArray(R.array.android_version);
 
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
-            ArrayList<ItemList> children1 = new ArrayList<>();
+            ArrayList<ItemContainer> children1 = new ArrayList<>();
             CharSequence[] strings= stringListForExpanedList.getTextArray(i);
             for (int j=0;j<strings.length;j++) {
                 if (j != 0) {
-                    ItemList itemList=new ItemList((String) strings[j],getIdResource(i),false,"");
-                    children1.add(itemList);
+                    ItemContainer itemContainer =new ItemContainer((String) strings[j],getIdResource(i),false,"");
+                    children1.add(itemContainer);
                 }
                 else {
                     if (strings.length==1) {
-                        ItemList itemList=new ItemList((String) strings[j],getIdResource(i),false,"");
-                        children1.add(itemList);
+                        ItemContainer itemContainer =new ItemContainer((String) strings[j],getIdResource(i),false,"");
+                        children1.add(itemContainer);
                     }
                 }
             }
@@ -120,7 +119,6 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
 
         CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavorite);
         checkBox.setChecked(!checkBox.isChecked());
-        groups.get(groupPosition).get(childPosition).setFavorite(checkBox.isChecked());
 
 
         return false;
@@ -132,11 +130,16 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         int off= adapter.getOffset(groupPosition);
         listener.onItemSelected(off);
 
-        CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavoriteGroup);
-        checkBox.setChecked(!checkBox.isChecked());
+        /*CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavoriteGroup);
+        checkBox.setChecked(!checkBox.isChecked());*/
+
+
+
 
         return false;
     }
+
+
     private int getIdResource(int counter) {
         switch (counter){
             case 0: return R.drawable.applepie;
@@ -155,4 +158,5 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
             default: return R.drawable.abc_btn_default_mtrl_shape;
         }
     }
+
 }
