@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,10 +22,23 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
     private ArrayList<ArrayList<String>> mGroups;
     private Context mContext;
     private Activity mActivity;
+    private int[] offset;
     public ExpListAdapter(Context context, ArrayList<ArrayList<String>> groups,Activity activity) {
         mContext = context;
         mGroups = groups;
         mActivity = activity;
+        offset=new int[mGroups.size()];
+        int off=0;
+        for (int i=0;i<mGroups.size();i++) {
+            offset[i]=off;
+            int vr=mGroups.get(i).size();
+            off+=vr;
+        }
+
+    }
+
+    public int getOffset(int group) {
+        return mGroups!=null ? offset[group] : 0;
     }
 
     @Override
@@ -83,6 +97,9 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         CharSequence[] strings= stringListForExpanedList.getTextArray(groupPosition);
         String string  = (String) strings[0];
         textGroup.setText("Group " + string);
+        CheckBox checkBoxFavorite=(CheckBox)convertView.findViewById(R.id.checkFavoriteGroup);
+        checkBoxFavorite.setChecked(true);
+
 
         return convertView;
 
@@ -98,18 +115,8 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
         textChild.setText(mGroups.get(groupPosition).get(childPosition));
-        Button button = (Button)convertView.findViewById(R.id.buttonChild);
-
-        final int pos =groupPosition;
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) mActivity;
-                listener.onItemSelected(pos);
-                Toast.makeText(mContext, "button is pressed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        CheckBox checkBoxFavorite=(CheckBox)convertView.findViewById(R.id.checkFavorite);
+        checkBoxFavorite.setChecked(true);
 
         return convertView;
     }

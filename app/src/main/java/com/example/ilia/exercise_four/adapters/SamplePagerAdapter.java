@@ -26,6 +26,6 @@ public class SamplePagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
 
-        return NUMBER_OF_PAGES;
+        return mGroups!=null ? mGroups.size() : 0;
     }
 }

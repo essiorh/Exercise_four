@@ -1,5 +1,6 @@
 package com.example.ilia.exercise_four.fragments;
 
+import android.app.ExpandableListActivity;
 import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
 import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.adapters.DefListAdapter;
@@ -24,10 +26,12 @@ import java.util.ArrayList;
 /**
  * Created by ilia on 08.06.15.
  */
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ISetCurrentItem {
+public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, ISetCurrentItem {
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
+    private         ExpListAdapter adapter;
+
     public ListFragment() {
     }
 
@@ -50,12 +54,18 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
                 if (j != 0) {
                     children1.add((String) strings[j]);
                 }
+                else {
+                    if (strings.length==1) {
+                        children1.add((String) strings[j]);
+                    }
+                }
             }
             groups.add(children1);
         }
-        ExpListAdapter adapter = new ExpListAdapter(inflateView.getContext(), groups,getActivity());
+        adapter = new ExpListAdapter(inflateView.getContext(), groups,getActivity());
         expandableListView.setAdapter(adapter);
-
+        expandableListView.setOnChildClickListener(this);
+        expandableListView.setOnGroupClickListener(this);
 
 
         ArrayList<String> stringListForDefaultList = new ArrayList<>();
@@ -94,5 +104,22 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
     public void setCurrentItem(int currentItem) {
         defaultListView.setSelection(currentItem);
         defaultListView.setSelection(currentItem);
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) getActivity();
+        int off= adapter.getOffset(groupPosition);
+        int pos=off+childPosition;
+        listener.onItemSelected(pos);
+        return false;
+    }
+
+    @Override
+    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+        IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) getActivity();
+        int off= adapter.getOffset(groupPosition);
+        listener.onItemSelected(off);
+        return false;
     }
 }
