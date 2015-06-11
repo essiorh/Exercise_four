@@ -14,19 +14,18 @@ import android.widget.Toast;
 
 import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
 import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.models.ItemList;
 
 import java.util.ArrayList;
 
 public class ExpListAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ArrayList<String>> mGroups;
+    private ArrayList<ArrayList<ItemList>> mGroups;
     private Context mContext;
-    private Activity mActivity;
     private int[] offset;
-    public ExpListAdapter(Context context, ArrayList<ArrayList<String>> groups,Activity activity) {
+    public ExpListAdapter(Context context, ArrayList<ArrayList<ItemList>> groups) {
         mContext = context;
         mGroups = groups;
-        mActivity = activity;
         offset=new int[mGroups.size()];
         int off=0;
         for (int i=0;i<mGroups.size();i++) {
@@ -114,9 +113,9 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
-        textChild.setText(mGroups.get(groupPosition).get(childPosition));
+        textChild.setText(mGroups.get(groupPosition).get(childPosition).getVersion());
         CheckBox checkBoxFavorite=(CheckBox)convertView.findViewById(R.id.checkFavorite);
-        checkBoxFavorite.setChecked(true);
+        checkBoxFavorite.setChecked(mGroups.get(groupPosition).get(childPosition).getFavorite());
 
         return convertView;
     }

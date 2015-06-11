@@ -20,6 +20,7 @@ import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.adapters.DefListAdapter;
 import com.example.ilia.exercise_four.adapters.ExpListAdapter;
+import com.example.ilia.exercise_four.models.ItemList;
 
 import java.util.ArrayList;
 
@@ -44,25 +45,27 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         defaultListView = (ListView) inflateView.findViewById(R.id.def_list);
 
         mSpinner.setOnItemSelectedListener(this);
-        ArrayList<ArrayList<String>> groups = new ArrayList<>();
+        ArrayList<ArrayList<ItemList>> groups = new ArrayList<>();
         TypedArray stringListForExpanedList = getResources().obtainTypedArray(R.array.android_version);
 
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
-            ArrayList<String> children1 = new ArrayList<>();
+            ArrayList<ItemList> children1 = new ArrayList<>();
             CharSequence[] strings= stringListForExpanedList.getTextArray(i);
             for (int j=0;j<strings.length;j++) {
                 if (j != 0) {
-                    children1.add((String) strings[j]);
+                    ItemList itemList=new ItemList((String) strings[j],false,getIdResource(i),"");
+                    children1.add(itemList);
                 }
                 else {
                     if (strings.length==1) {
-                        children1.add((String) strings[j]);
+                        ItemList itemList=new ItemList((String) strings[j],false,getIdResource(i),"");
+                        children1.add(itemList);
                     }
                 }
             }
             groups.add(children1);
         }
-        adapter = new ExpListAdapter(inflateView.getContext(), groups,getActivity());
+        adapter = new ExpListAdapter(inflateView.getContext(), groups);
         expandableListView.setAdapter(adapter);
         expandableListView.setOnChildClickListener(this);
         expandableListView.setOnGroupClickListener(this);
@@ -121,5 +124,23 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         int off= adapter.getOffset(groupPosition);
         listener.onItemSelected(off);
         return false;
+    }
+    private int getIdResource(int counter) {
+        switch (counter){
+            case 0: return R.drawable.applepie;
+            case 1: return R.drawable.bananabread;
+            case 2: return R.drawable.cupcake;
+            case 3: return R.drawable.donut;
+            case 4: return R.drawable.eclair;
+            case 5: return R.drawable.froyo;
+            case 6: return R.drawable.gingerbread;
+            case 7: return R.drawable.honeycomb;
+            case 8: return R.drawable.icecreamsandwich;
+            case 9: return R.drawable.jellybean;
+            case 10: return R.drawable.kitkat;
+            case 11: return R.drawable.lollipop;
+            case 12: return R.drawable.lollipop;
+            default: return R.drawable.abc_btn_default_mtrl_shape;
+        }
     }
 }

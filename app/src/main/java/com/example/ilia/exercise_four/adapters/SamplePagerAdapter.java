@@ -10,17 +10,19 @@ import java.util.ArrayList;
 public class SamplePagerAdapter extends FragmentPagerAdapter {
     private static final int NUMBER_OF_PAGES = 10;
     private ArrayList<String> mGroups;
+    private ArrayList<Integer> mIdresources;
 
-    public SamplePagerAdapter(FragmentManager fm,ArrayList<String> arrayList) {
+    public SamplePagerAdapter(FragmentManager fm,ArrayList<String> arrayList,ArrayList<Integer> idresources) {
         super(fm);
         mGroups=arrayList;
+        mIdresources=idresources;
     }
 
     @Override
     public android.support.v4.app.Fragment getItem(int index) {
 
         return
-                PageFragment.newInstance(mGroups.get(index));
+                PageFragment.newInstance(mGroups.get(index),mIdresources.get(index));
     }
 
     @Override
