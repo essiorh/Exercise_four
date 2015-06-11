@@ -1,24 +1,21 @@
 package com.example.ilia.exercise_four.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.models.ItemList;
 
 import java.util.ArrayList;
 
-public class ExpListAdapter extends BaseExpandableListAdapter {
+public class ExpListAdapter extends BaseExpandableListAdapter{
 
     private ArrayList<ArrayList<ItemList>> mGroups;
     private Context mContext;
@@ -97,7 +94,7 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         String string  = (String) strings[0];
         textGroup.setText("Group " + string);
         CheckBox checkBoxFavorite=(CheckBox)convertView.findViewById(R.id.checkFavoriteGroup);
-        checkBoxFavorite.setChecked(true);
+        checkBoxFavorite.setChecked(false);
 
 
         return convertView;
@@ -113,7 +110,7 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
-        textChild.setText(mGroups.get(groupPosition).get(childPosition).getVersion());
+        textChild.setText(mGroups.get(groupPosition).get(childPosition).getTitle());
         CheckBox checkBoxFavorite=(CheckBox)convertView.findViewById(R.id.checkFavorite);
         checkBoxFavorite.setChecked(mGroups.get(groupPosition).get(childPosition).getFavorite());
 
@@ -124,5 +121,4 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 }

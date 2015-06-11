@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -32,6 +33,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
     private ListView defaultListView;
     private Spinner mSpinner;
     private         ExpListAdapter adapter;
+    private         ArrayList<ArrayList<ItemList>> groups;
 
     public ListFragment() {
     }
@@ -45,7 +47,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         defaultListView = (ListView) inflateView.findViewById(R.id.def_list);
 
         mSpinner.setOnItemSelectedListener(this);
-        ArrayList<ArrayList<ItemList>> groups = new ArrayList<>();
+        groups = new ArrayList<>();
         TypedArray stringListForExpanedList = getResources().obtainTypedArray(R.array.android_version);
 
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
@@ -53,12 +55,12 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
             CharSequence[] strings= stringListForExpanedList.getTextArray(i);
             for (int j=0;j<strings.length;j++) {
                 if (j != 0) {
-                    ItemList itemList=new ItemList((String) strings[j],false,getIdResource(i),"");
+                    ItemList itemList=new ItemList((String) strings[j],getIdResource(i),false,"");
                     children1.add(itemList);
                 }
                 else {
                     if (strings.length==1) {
-                        ItemList itemList=new ItemList((String) strings[j],false,getIdResource(i),"");
+                        ItemList itemList=new ItemList((String) strings[j],getIdResource(i),false,"");
                         children1.add(itemList);
                     }
                 }
@@ -115,6 +117,12 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         int off= adapter.getOffset(groupPosition);
         int pos=off+childPosition;
         listener.onItemSelected(pos);
+
+        CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavorite);
+        checkBox.setChecked(!checkBox.isChecked());
+        groups.get(groupPosition).get(childPosition).setFavorite(checkBox.isChecked());
+
+
         return false;
     }
 
@@ -123,6 +131,10 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) getActivity();
         int off= adapter.getOffset(groupPosition);
         listener.onItemSelected(off);
+
+        CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavoriteGroup);
+        checkBox.setChecked(!checkBox.isChecked());
+
         return false;
     }
     private int getIdResource(int counter) {

@@ -4,49 +4,47 @@ package com.example.ilia.exercise_four.models;
  * Created by ilia on 11.06.15.
  */
 public class ItemList {
-    private String mVersion;
+    private String mTitle;
+    private int mIdRed;
     private boolean mFavorite;
-    private int mResId;
     private String mUrl;
-    public ItemList(){
-    }
-    public ItemList(String version,boolean favorite,int resId,String url){
-        mVersion=version;
+
+    public ItemList(String title,int idRed, boolean favorite, String url) {
+        mTitle=title;
+        mIdRed=idRed;
         mFavorite=favorite;
-        mResId=resId;
         mUrl=url;
     }
 
-
-    public String getVersion() {
-        return mVersion;
+    public String getTitle() {
+        return mTitle;
     }
 
-    public void setVersion(String version) {
-        this.mVersion = mVersion;
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public int getIdRed() {
+        return mIdRed;
+    }
+
+    public void setIdRed(int mIdRed) {
+        this.mIdRed = mIdRed;
     }
 
     public boolean getFavorite() {
         return mFavorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.mFavorite = favorite;
-    }
-
-    public int getResId() {
-        return mResId;
-    }
-
-    public void setResId(int resId) {
-        this.mResId = resId;
+    public void setFavorite(boolean mFavorite) {
+        this.mFavorite = mFavorite;
     }
 
     public String getUrl() {
         return mUrl;
     }
 
-    public void setUrl(String url) {
-        this.mUrl = url;
+    public void setUrl(String mUrl) {
+        this.mUrl = mUrl;
     }
 }
