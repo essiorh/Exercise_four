@@ -1,4 +1,4 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.interfaces;
 
 /**
  * Created by Ilia Maltsev on 10.06.2015.

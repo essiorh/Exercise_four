@@ -1,4 +1,4 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.adapters;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import com.example.ilia.exercise_four.R;
 
 import java.util.ArrayList;
 

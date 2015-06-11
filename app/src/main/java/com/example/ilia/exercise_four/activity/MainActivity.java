@@ -1,7 +1,6 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.activity;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +8,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
+import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
+import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.fragments.ListFragment;
+import com.example.ilia.exercise_four.fragments.ViewPagerFragment;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,IConnectFragmentWithActivity {
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.frg_pager:
-                Toast.makeText(this,"Нажали",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"пїЅпїЅпїЅпїЅпїЅпїЅ",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

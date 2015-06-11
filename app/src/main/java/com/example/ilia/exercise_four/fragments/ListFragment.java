@@ -1,8 +1,7 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.fragments;
 
+import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
-import android.app.FragmentManager;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,13 +14,17 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
+import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.adapters.DefListAdapter;
+import com.example.ilia.exercise_four.adapters.ExpListAdapter;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ilia on 08.06.15.
  */
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ISetCurrentItem{
+public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,ISetCurrentItem {
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
@@ -38,19 +41,31 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
 
         mSpinner.setOnItemSelectedListener(this);
         ArrayList<ArrayList<String>> groups = new ArrayList<>();
-        String[] stringListForExpanedList = getResources().getStringArray(R.array.android_version);
-        for (int i = 0; i < stringListForExpanedList.length; i++) {
+        TypedArray stringListForExpanedList = getResources().obtainTypedArray(R.array.android_version);
+
+        for (int i = 0; i < stringListForExpanedList.length(); i++) {
             ArrayList<String> children1 = new ArrayList<>();
-            children1.add("Child_1");
-            children1.add("Child_2");
+            CharSequence[] strings= stringListForExpanedList.getTextArray(i);
+            for (int j=0;j<strings.length;j++) {
+                if (j != 0) {
+                    children1.add((String) strings[j]);
+                }
+            }
             groups.add(children1);
         }
         ExpListAdapter adapter = new ExpListAdapter(inflateView.getContext(), groups,getActivity());
         expandableListView.setAdapter(adapter);
-        String[] arrayListForDefaultList = getResources().getStringArray(R.array.android_version);
+
+
+
         ArrayList<String> stringListForDefaultList = new ArrayList<>();
-        for (int i = 0; i < arrayListForDefaultList.length; i++) {
-            stringListForDefaultList.add(arrayListForDefaultList[i]);
+        for (int i = 0; i < stringListForExpanedList.length(); i++) {
+            CharSequence[] strings= stringListForExpanedList.getTextArray(i);
+            for (int j=0;j<strings.length;j++) {
+                if (j != 0) {
+                    stringListForDefaultList.add((String) strings[j]);
+                }
+            }
         }
         ListAdapter mListAdapter = new DefListAdapter(inflateView.getContext(), stringListForDefaultList);
         defaultListView.setAdapter(mListAdapter);

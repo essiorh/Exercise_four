@@ -1,7 +1,9 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.adapters;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.ilia.exercise_four.fragments.PageFragment;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.ilia.exercise_four.R;
 
 public class PageFragment extends Fragment {
 

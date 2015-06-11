@@ -1,8 +1,8 @@
-package com.example.ilia.exercise_four;
+package com.example.ilia.exercise_four.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
+import com.example.ilia.exercise_four.R;
 
 import java.util.ArrayList;
 
@@ -76,8 +79,9 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
-        String[] stringList=convertView.getResources().getStringArray(R.array.android_version);
-        String string  =stringList[groupPosition];
+        TypedArray stringListForExpanedList = convertView.getResources().obtainTypedArray(R.array.android_version);
+        CharSequence[] strings= stringListForExpanedList.getTextArray(groupPosition);
+        String string  = (String) strings[0];
         textGroup.setText("Group " + string);
 
         return convertView;
@@ -94,9 +98,10 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
 
         TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
         textChild.setText(mGroups.get(groupPosition).get(childPosition));
-
         Button button = (Button)convertView.findViewById(R.id.buttonChild);
-        final int pos=groupPosition;
+
+        final int pos =groupPosition;
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
