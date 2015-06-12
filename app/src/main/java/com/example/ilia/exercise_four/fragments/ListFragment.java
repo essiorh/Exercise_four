@@ -4,17 +4,24 @@ import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.example.ilia.exercise_four.adapters.workViewHolder;
+import com.example.ilia.exercise_four.interfaces.ICheckFavorite;
 import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
 import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 import com.example.ilia.exercise_four.R;
@@ -27,12 +34,19 @@ import java.util.ArrayList;
 /**
  * Created by ilia on 08.06.15.
  */
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, ISetCurrentItem {
+public class ListFragment extends Fragment implements
+        CheckBox.OnClickListener, ListView.OnItemClickListener,
+        Spinner.OnItemSelectedListener, ExpandableListView.OnChildClickListener,
+        ExpandableListView.OnGroupClickListener, ISetCurrentItem {
+
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
     private         ExpListAdapter adapter;
+    private         ListAdapter mListAdapter;
     private         ArrayList<ArrayList<ItemContainer>> groups;
+    private         TextView mTextView;
+    private         CheckBox checkBoxFavorite;
 
     public ListFragment() {
     }
@@ -44,6 +58,24 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         expandableListView = (ExpandableListView) inflateView.findViewById(R.id.exp_list);
         mSpinner = (Spinner) inflateView.findViewById(R.id.list_spinner);
         defaultListView = (ListView) inflateView.findViewById(R.id.def_list);
+        checkBoxFavorite = (CheckBox) inflateView.findViewById(R.id.filter_favorite);
+        checkBoxFavorite.setOnClickListener(this);
+
+        mTextView = (TextView) inflateView.findViewById(R.id.filter);
+        mTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         mSpinner.setOnItemSelectedListener(this);
         groups = new ArrayList<>();
@@ -51,18 +83,12 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
 
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
             ArrayList<ItemContainer> children1 = new ArrayList<>();
-            CharSequence[] strings= stringListForExpanedList.getTextArray(i);
-            for (int j=0;j<strings.length;j++) {
-                if (j != 0) {
-                    ItemContainer itemContainer =new ItemContainer((String) strings[j],getIdResource(i),false,"");
-                    children1.add(itemContainer);
-                }
-                else {
-                    if (strings.length==1) {
-                        ItemContainer itemContainer =new ItemContainer((String) strings[j],getIdResource(i),false,"");
-                        children1.add(itemContainer);
-                    }
-                }
+            CharSequence[] strings = stringListForExpanedList.getTextArray(i);
+            for (int j = 0; j < strings.length; j++) {
+
+                ItemContainer itemContainer = new ItemContainer((String) strings[j], getIdResource(i), false, "");
+                children1.add(itemContainer);
+
             }
             groups.add(children1);
         }
@@ -72,36 +98,39 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         expandableListView.setOnGroupClickListener(this);
 
 
-        ArrayList<String> stringListForDefaultList = new ArrayList<>();
+        ArrayList<ItemContainer> stringListForDefaultList = new ArrayList<>();
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
-            CharSequence[] strings= stringListForExpanedList.getTextArray(i);
-            for (int j=0;j<strings.length;j++) {
-                if (j != 0) {
-                    stringListForDefaultList.add((String) strings[j]);
-                }
+            CharSequence[] strings = stringListForExpanedList.getTextArray(i);
+            for (int j = 0; j < strings.length; j++) {
+
+                ItemContainer itemContainer = new ItemContainer((String) strings[j], getIdResource(i), false, "");
+                stringListForDefaultList.add(itemContainer);
+
             }
         }
-        ListAdapter mListAdapter = new DefListAdapter(inflateView.getContext(), stringListForDefaultList);
+        stringListForExpanedList.recycle();
+
+        mListAdapter = new workViewHolder(getActivity(), stringListForDefaultList);
+
         defaultListView.setAdapter(mListAdapter);
+        defaultListView.setOnItemClickListener(this);
+
         return inflateView;
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(position==1) {
-            defaultListView.setVisibility(View.VISIBLE);
-            expandableListView.setVisibility(View.GONE);
-        } else {
-            defaultListView.setVisibility(View.GONE);
-            expandableListView.setVisibility(View.VISIBLE);
+        switch (parent.getId()) {
+            case R.id.list_spinner:
+                if (position == 1) {
+                    defaultListView.setVisibility(View.VISIBLE);
+                    expandableListView.setVisibility(View.GONE);
+                } else {
+                    defaultListView.setVisibility(View.GONE);
+                    expandableListView.setVisibility(View.VISIBLE);
+                }
+                break;
         }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     @Override
@@ -116,11 +145,6 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         int off= adapter.getOffset(groupPosition);
         int pos=off+childPosition;
         listener.onItemSelected(pos);
-
-        CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavorite);
-        checkBox.setChecked(!checkBox.isChecked());
-
-
         return false;
     }
 
@@ -129,15 +153,31 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) getActivity();
         int off= adapter.getOffset(groupPosition);
         listener.onItemSelected(off);
-
-        /*CheckBox checkBox=(CheckBox)v.findViewById(R.id.checkFavoriteGroup);
-        checkBox.setChecked(!checkBox.isChecked());*/
-
-
-
-
         return false;
     }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("mylog", "itemClick: position = " + position + ", id = "
+                + id);
+
+        IConnectFragmentWithActivity listener = (IConnectFragmentWithActivity) getActivity();
+        int off = position;
+        listener.onItemSelected(off);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.filter_favorite:
+            adapter.checkFavorite(((CheckBox) v).isChecked());
+                ICheckFavorite iCheckFavorite= (ICheckFavorite) mListAdapter;
+                iCheckFavorite.checkFavorite(((CheckBox) v).isChecked());
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {}
 
 
     private int getIdResource(int counter) {
@@ -158,5 +198,6 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
             default: return R.drawable.abc_btn_default_mtrl_shape;
         }
     }
+
 
 }

@@ -33,17 +33,11 @@ public class MainActivity extends AppCompatActivity implements IConnectFragmentW
         ArrayList<Integer> intListForIdImages=new ArrayList<>();
 
         for (int i = 0; i < stringListForExpanedList.length(); i++) {
-            CharSequence[] strings= stringListForExpanedList.getTextArray(i);
-            for (int j=0;j<strings.length;j++) {
-                if (j != 0) {
-                    stringListForDefaultList.add((String) strings[j]);
-                    intListForIdImages.add(getIdResource(i));
-                } else {
-                    if (strings.length==1) {
-                        intListForIdImages.add(getIdResource(i));
-                        stringListForDefaultList.add((String) strings[j]);
-                    }
-                }
+            CharSequence[] strings = stringListForExpanedList.getTextArray(i);
+            for (int j = 0; j < strings.length; j++) {
+
+                stringListForDefaultList.add((String) strings[j]);
+                intListForIdImages.add(getIdResource(i));
             }
         }
         mMyFragmentPagerAdapter = new SamplePagerAdapter(getSupportFragmentManager(), stringListForDefaultList,intListForIdImages);
