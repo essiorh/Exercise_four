@@ -19,15 +19,13 @@ import java.util.ArrayList;
 /**
  * Created by ilia on 08.06.15.
  */
-public class DefListAdapter implements ListAdapter {
-    private ArrayList<ItemContainer> mGroups;
 public class DefListAdapter extends ArrayAdapter<String> implements IDeleteElement {
-    private ArrayList<String> mGroups;
+
+    private ArrayList<ItemContainer> mGroups;
     private Context mContext;
     private LayoutInflater mLayoutInflater = null;
 
     public DefListAdapter(Context context, ArrayList<ItemContainer> groups){
-    public DefListAdapter(Context context, ArrayList<String> groups){
         super(context,R.layout.group_view);
         mContext = context;
         mGroups = groups;
@@ -58,11 +56,6 @@ public class DefListAdapter extends ArrayAdapter<String> implements IDeleteEleme
     @Override
     public int getCount() {
         return mGroups.size();
-    }
-
-    @Override
-    public String getItem(int position) {
-        return mGroups.get(position);
     }
 
     @Override

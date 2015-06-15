@@ -20,8 +20,7 @@ import com.example.ilia.exercise_four.models.ItemContainer;
 import java.util.ArrayList;
 
 public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBox.OnClickListener,
-        Filterable,ICheckFavorite {
-public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBox.OnClickListener, IDeleteElement {
+        Filterable,ICheckFavorite, IDeleteElement {
 
     private ArrayList<ArrayList<ItemContainer>> mGroups;
     private ArrayList<ArrayList<ItemContainer>> mFilteredGroups;

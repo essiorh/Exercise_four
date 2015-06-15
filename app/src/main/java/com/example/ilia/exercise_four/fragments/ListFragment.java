@@ -1,14 +1,12 @@
 package com.example.ilia.exercise_four.fragments;
 
 import android.content.res.TypedArray;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.support.v4.app.Fragment;
-import android.support.v4.internal.view.SupportMenu;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
@@ -25,13 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.adapters.ExpListAdapter;
 import com.example.ilia.exercise_four.adapters.workViewHolder;
 import com.example.ilia.exercise_four.interfaces.ICheckFavorite;
-import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
-import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
-import com.example.ilia.exercise_four.R;
-import com.example.ilia.exercise_four.adapters.DefListAdapter;
-import com.example.ilia.exercise_four.adapters.ExpListAdapter;
 import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
 import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 import com.example.ilia.exercise_four.models.ItemContainer;
@@ -46,10 +40,7 @@ public class ListFragment extends Fragment implements
         Spinner.OnItemSelectedListener, ExpandableListView.OnChildClickListener,
         ExpandableListView.OnGroupClickListener, ISetCurrentItem {
 
-public class ListFragment extends Fragment implements Spinner.OnItemSelectedListener,
-                                                      ExpandableListView.OnChildClickListener,
-                                                      ExpandableListView.OnGroupClickListener,
-                                                      ISetCurrentItem {
+
     private ExpandableListView expandableListView;
     private ListView defaultListView;
     private Spinner mSpinner;
@@ -161,7 +152,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         int groupPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
         int childPos = ExpandableListView.getPackedPositionChild(info.packedPosition);
         ItemContainer itemContainer =(ItemContainer) this.adapter.getChild(groupPos, childPos);
-
+        //ItemContainer itemContainer1Default=(ItemContainer)this.mListAdapter
         adapter.deleteExpandableElement(itemContainer);
         adapter.notifyDataSetChanged();
         //String[] menuItems = getResources().getStringArray(R.array.menu);
@@ -173,10 +164,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
         return true;
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
 
-    }
 
     @Override
     public void setCurrentItem(int currentItem) {
@@ -230,7 +218,7 @@ public class ListFragment extends Fragment implements Spinner.OnItemSelectedList
                 break;
         }
 
-        return false;
+
     }
 
     @Override

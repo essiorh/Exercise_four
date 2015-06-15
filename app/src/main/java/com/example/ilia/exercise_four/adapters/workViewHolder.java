@@ -16,12 +16,13 @@ import android.widget.TextView;
 
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.interfaces.ICheckFavorite;
+import com.example.ilia.exercise_four.interfaces.IDeleteElement;
 import com.example.ilia.exercise_four.models.ItemContainer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class workViewHolder extends ArrayAdapter implements ICheckFavorite, CheckBox.OnClickListener{
+public class workViewHolder extends ArrayAdapter implements ICheckFavorite, CheckBox.OnClickListener, IDeleteElement{
 
     private List<ItemContainer> list;
     private List<ItemContainer> listFavorite;
@@ -49,6 +50,18 @@ public class workViewHolder extends ArrayAdapter implements ICheckFavorite, Chec
                 notifyDataSetChanged();
                 break;
         }
+    }
+
+    @Override
+    public void deleteElement(String position) {
+
+    }
+
+    @Override
+    public void deleteExpandableElement(ItemContainer position) {
+        list.remove(position);
+        listFavorite.remove(position);
+        notifyDataSetChanged();
     }
 
     static class ViewHolder {
