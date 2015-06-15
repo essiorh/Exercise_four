@@ -10,6 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.models.ItemContainer;
 import com.example.ilia.exercise_four.interfaces.IDeleteElement;
 import com.example.ilia.exercise_four.models.ItemContainer;
 
@@ -18,14 +19,20 @@ import java.util.ArrayList;
 /**
  * Created by ilia on 08.06.15.
  */
+public class DefListAdapter implements ListAdapter {
+    private ArrayList<ItemContainer> mGroups;
 public class DefListAdapter extends ArrayAdapter<String> implements IDeleteElement {
     private ArrayList<String> mGroups;
     private Context mContext;
+    private LayoutInflater mLayoutInflater = null;
 
+    public DefListAdapter(Context context, ArrayList<ItemContainer> groups){
     public DefListAdapter(Context context, ArrayList<String> groups){
         super(context,R.layout.group_view);
         mContext = context;
         mGroups = groups;
+        mLayoutInflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -71,11 +78,14 @@ public class DefListAdapter extends ArrayAdapter<String> implements IDeleteEleme
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.group_view, null);
+            convertView = mLayoutInflater.inflate(R.layout.list_item_view, null);
         }
-        TextView textChild = (TextView) convertView.findViewById(R.id.textGroup);
-        textChild.setText(mGroups.get(position));
+
+        TextView textChild = (TextView) convertView.findViewById(R.id.label);
+        textChild.setText(mGroups.get(position).getTitle());
+
+
+
 
         return convertView;
     }
