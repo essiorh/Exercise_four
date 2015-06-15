@@ -1,20 +1,28 @@
 package com.example.ilia.exercise_four.fragments;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ilia.exercise_four.R;
+import android.os.Handler;
+
 
 public class PageFragment extends Fragment {
 
     public static final String ID_RES = "idRes";
     public static final String TITLE = "title";
-
+    private ProgressBar dialog;
     public static PageFragment newInstance(String title,int idRes) {
 
         PageFragment pageFragment = new PageFragment();
@@ -39,6 +47,33 @@ public class PageFragment extends Fragment {
 
         ImageView imageVersion=(ImageView) view.findViewById(R.id.imageVersion);
         imageVersion.setImageResource(getArguments().getInt(ID_RES));
+
+        dialog = (ProgressBar) view.findViewById(R.id.progressBar);
+        final WebView webView= (WebView) view.findViewById(R.id.web_view);
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+
+                dialog.setVisibility(View.VISIBLE);
+                webView.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+
+                dialog.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+            }
+        });
+        final Handler handler=new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                webView.loadUrl("http://vk.com");
+            }
+        });
 
 
         return view;
