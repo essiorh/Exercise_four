@@ -7,23 +7,26 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewParent;
 
 import com.example.ilia.exercise_four.R;
 import com.example.ilia.exercise_four.adapters.SamplePagerAdapter;
 import com.example.ilia.exercise_four.fragments.ListFragment;
 import com.example.ilia.exercise_four.interfaces.IConnectFragmentWithActivity;
+import com.example.ilia.exercise_four.interfaces.ISetCurrentItem;
 
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements IConnectFragmentWithActivity {
+public class MainActivity extends AppCompatActivity implements IConnectFragmentWithActivity, ViewPager.OnPageChangeListener{
+    public static final String LIST_FRAGMENT = "1";
     private ViewPager mViewPager;
     private SamplePagerAdapter mMyFragmentPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportFragmentManager().beginTransaction().add(R.id.frg_list, new ListFragment(),"1").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frg_list, new ListFragment(), LIST_FRAGMENT).commit();
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -48,7 +51,10 @@ public class MainActivity extends AppCompatActivity implements IConnectFragmentW
         }
         mMyFragmentPagerAdapter = new SamplePagerAdapter(getSupportFragmentManager(), stringListForDefaultList,intListForIdImages);
         mViewPager.setAdapter(mMyFragmentPagerAdapter);
-
+        mViewPager.addOnPageChangeListener(this);
+    }
+    @Override public void onPageSelected(int position) {
+        ((ISetCurrentItem) getSupportFragmentManager().findFragmentByTag(LIST_FRAGMENT)).setCurrentItem(position);
     }
 
     @Override
@@ -90,4 +96,8 @@ public class MainActivity extends AppCompatActivity implements IConnectFragmentW
             default: return R.drawable.abc_btn_default_mtrl_shape;
         }
     }
+
+    @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {    }
+
+    @Override public void onPageScrollStateChanged(int state) {    }
 }

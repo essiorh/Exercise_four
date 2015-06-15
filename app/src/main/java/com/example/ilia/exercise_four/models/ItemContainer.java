@@ -1,5 +1,7 @@
 package com.example.ilia.exercise_four.models;
 
+import java.util.ArrayList;
+
 /**
  * Created by ilia on 11.06.15.
  */
@@ -46,5 +48,12 @@ public class ItemContainer {
 
     public void setUrl(String mUrl) {
         this.mUrl = mUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        return super.equals(o) || ((ItemContainer)o).getTitle()==mTitle;
+
     }
 }

@@ -11,11 +11,12 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.interfaces.IDeleteElement;
 import com.example.ilia.exercise_four.models.ItemContainer;
 
 import java.util.ArrayList;
 
-public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBox.OnClickListener {
+public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBox.OnClickListener, IDeleteElement {
 
     private ArrayList<ArrayList<ItemContainer>> mGroups;
     private Context mContext;
@@ -33,6 +34,8 @@ public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBo
         }
 
     }
+
+
 
     public int getOffset(int group) {
         return mGroups != null ? offset[group] : 0;
@@ -143,8 +146,7 @@ public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBo
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -163,5 +165,33 @@ public class ExpListAdapter extends BaseExpandableListAdapter implements CheckBo
             case R.id.checkFavorite:
 
         }
+    }
+
+    @Override
+    public void deleteElement(String position) {
+
+    }
+
+
+
+    @Override
+    public void deleteExpandableElement(ItemContainer position) {
+        ArrayList<ArrayList<ItemContainer>> mForDeletGroups;
+        mForDeletGroups=new ArrayList<>();
+        mForDeletGroups.addAll(mGroups);
+        mGroups.clear();
+        for (int i=0;i<mForDeletGroups.size();i++) {
+            ArrayList<ItemContainer> itemContainers=new ArrayList<>();
+            for (int j=0;j<mForDeletGroups.get(i).size();j++) {
+                if (!mForDeletGroups.get(i).get(j).equals(position)) {
+                    itemContainers.add(mForDeletGroups.get(i).get(j));
+                }
+            }
+            if (itemContainers.size()!=0) {
+                mGroups.add(itemContainers);
+            }
+        }
+        //mGroups.remove(position);
+        notifyDataSetChanged();
     }
 }

@@ -5,21 +5,25 @@ import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.ilia.exercise_four.R;
+import com.example.ilia.exercise_four.interfaces.IDeleteElement;
+import com.example.ilia.exercise_four.models.ItemContainer;
 
 import java.util.ArrayList;
 
 /**
  * Created by ilia on 08.06.15.
  */
-public class DefListAdapter implements ListAdapter {
+public class DefListAdapter extends ArrayAdapter<String> implements IDeleteElement {
     private ArrayList<String> mGroups;
     private Context mContext;
 
     public DefListAdapter(Context context, ArrayList<String> groups){
+        super(context,R.layout.group_view);
         mContext = context;
         mGroups = groups;
     }
@@ -50,7 +54,7 @@ public class DefListAdapter implements ListAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public String getItem(int position) {
         return mGroups.get(position);
     }
 
@@ -92,4 +96,15 @@ public class DefListAdapter implements ListAdapter {
         return false;
     }
 
+    @Override
+    public void deleteElement(String position) {
+        mGroups.remove(position);
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void deleteExpandableElement(ItemContainer position) {
+
+    }
 }
